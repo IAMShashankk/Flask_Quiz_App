@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Deployment Tutorial 1</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+
+<body style="background: #000;">
+ <div class="login">
+	<h1>Please select appropriate option.</h1>
+      <form id="question_form" name="form", method="post", style="text-align: center;">
+            {% for key, value in  question_dict.items()%}
+            <h3>{{key}}</h3>
+            <div class="checkbox-group">
+                <label>
+                  <input type="checkbox" class="radio" value="1" name="group" id="op_1" required/>{{value[0]}}</label>
+                <label>
+                  <input type="checkbox" class="radio" value="2" name="group" id="op_2" required/>{{value[1]}}</label>
+                <label>
+                  <input type="checkbox" class="radio" value="3" name="group" id="op_3" required/>{{value[2]}}</label>
+                <label>
+                  <input type="checkbox" class="radio" value="4" name="group" id="op_4" required/>{{value[3]}}</label>
+              </div>
+            {% endfor %}
+            <br>
+            <br>
+            {% if step > 1 %}
+                <a class="previous" href="{{ url_for('step', step=step-1)}}">&laquo; Previous</a>
+            {% endif %}
+            {% if step < 4 %}
+                <a class="next" onclick="submitForm()">Next &raquo;</a>
+            {% endif %}
+            {% if step == 4 %}
+            <a class="Submit" onclick="submitForm()">Submit &raquo;</a>
+        {% endif %}
+        
+    </form>
+ </div>
+ <script type="text/javascript">
+    function submitForm(){
+        $cbx_group = $("input:checkbox[name='group']");
+        $cbx_group.prop('required', true);
+        if($cbx_group.is(":checked")){
+        $cbx_group.prop('required', false);
+        document.getElementById('question_form').submit();
+        }
+        else{
+            alert("Please answer the question!!!");
+        }
+        }
+    $("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+    $box.prop("checked", true);
+  } else {
+    $box.prop("checked", false);
+  }
+});
+</script>
+</body>
+</html>
